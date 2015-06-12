@@ -94,7 +94,10 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
             if (enemy.HandlesCollision(player))
+            {
                 player.reset();
+                $("#score").html(player.score);
+            }
             if (enemy.x > 505)
                 enemy.reset();
         });
@@ -102,15 +105,14 @@ var Engine = (function(global) {
         if ((player.y < 72) && (player.lastWan === 0))
         {
             player.score++;
-           // $("#score").val(player.score);
-           $( "#score" ).attr( "title", player.score );
+           $("#score").html(player.score);
             player.lastWan = 1;
             player.reset();
-          //  player.reset();
         }
-        console.log("score"+player.score);
-        console.log("y"+player.y);
-        console.log("lastWan"+player.lastWan);
+        console.log("lastwan " + player.lastWan);
+        console.log("score " + player.score);
+        console.log("x " + player.x);
+        console.log("y " + player.y);
     }
 
     /* This function initially draws the "game level", it will then call
@@ -168,7 +170,6 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
-
         player.render();
     }
 

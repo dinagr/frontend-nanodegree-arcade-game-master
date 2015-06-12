@@ -1,18 +1,33 @@
 // Enemies our player must avoid
 
 //
-var Enemy = function(x,y,speedX,speedY) {
+var Actor = function(x,y,speedX,speedY, sprite) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug.png';
+    this.sprite = sprite;
     this.speedX = speedX;
     this.speedY = speedY;
     this.x = x;
     this.y = y; 
 }
+
+Actor.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
+
+var Enemy = function(x,y,speedX,speedY, sprite) {
+    // Variables applied to each of our instances go here,
+    // we've provided one for you to get started
+
+    // The image/sprite for our enemies, this uses
+    // a helper we've provided to easily load images
+    Actor.call(this,x,y,speedX,speedY, sprite);
+}
+Enemy.prototype = Object.create(Actor.prototype);
+Enemy.prototype.constructor = Enemy;
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
@@ -30,62 +45,36 @@ Enemy.prototype.reset = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
-// Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
-
 Enemy.prototype.HandlesCollision = function(Player) {
-    //console.log("collision");
-    //console.log("Enemy x:" + this.x);
-    //console.log("Player x:" + Player.x);
-    //console.log("Enemy y:" + this.y);
-    //console.log("Player y:" + Player.y);
     if ((Math.abs(this.x - Player.x)<75) && (Math.abs(this.y - Player.y)<75))
     {
-        //console.log("reset");
-       // console.log("x:" + Math.abs(Enemy.x - Player.x));
-        //console.log("y:" + Math.abs(Enemy.y === Player.y));
         if (Player.score <= 0)
         {
-            console.log("You Lose!!!!");
-            this.reset();
-            Player.reset();
-            Player.score = 0;
-          //  $("#score").val(player.score);
-            $( "#score" ).attr( "title", player.score );
+            alert("You lose!! A new game starts!");
         }
         else 
-            {
-                Player.score--;
-              //  $("#score").val(player.score);
-                $( "#score" ).attr( "title", player.score );
-            }
+        {
+            Player.score--;
+            $("#score").html(player.score);
+        }
         return true;
     }
     else return false;
 }
 
-var Player = function(x,y,moveX,moveY) {
+var Player = function(x,y,speedX,speedY,sprite,score,lastWan) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
-    this.sprite = 'images/char-boy.png';
-    this.moveX = moveX;
-    this.moveY = moveY;
-    this.x = x;
-    this.y = y; 
-    this.score = 0;
-    this.lastWan = 0;
-   // console.log(this.score);
+    Actor.call(this,x,y,speedX,speedY, sprite);
+    this.score = score;
+    this.lastWan = lastWan;
 }
 
-// Draw the enemy on the screen, required method for game
-Player.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+Player.prototype = Object.create(Actor.prototype);
+Player.prototype.constructor = Player;
 
 // Reset the player after a collision
 Player.prototype.reset = function() {
@@ -93,6 +82,7 @@ Player.prototype.reset = function() {
     this.y = 412;
     this.lastWan = 0;
     ctx.drawImage(Resources.get(this.sprite),this.x,this.y);
+    $("#score").html(player.score);
 }
 
 Player.prototype.update = function(dt) {
@@ -100,10 +90,11 @@ Player.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
     //console.log("update player");
-    this.x = this.x + this.moveX;
-    this.y = this.y + this.moveY;
-    this.moveX = 0;
-    this.moveY = 0;
+    this.x = this.x + this.speedX;
+    this.y = this.y + this.speedY;
+    this.speedX = 0;
+    this.speedY = 0;
+    $("#score").html(player.score);
 }
 
 Player.prototype.handleInput = function(pressedKey) {
@@ -116,57 +107,55 @@ Player.prototype.handleInput = function(pressedKey) {
     {
         if(this.y < 64)
         {
-            this.moveY = 0;
-            this.moveX = 0;
+            this.speedY = 0;
+            this.speedX = 0;
         }
         else
         {
-            this.moveY = -85;
-            this.moveX = 0;
+            this.speedY = -85;
+            this.speedX = 0;
         }
     }
    if(pressedKey === 'down')
     {
         if(this.y >= 410)
         {
-            this.moveY = 0;
-            this.moveX = 0;
+            this.speedY = 0;
+            this.speedX = 0;
         }
         else
         {
-            this.moveY = 85;
-            this.moveX = 0;
+            this.speedY = 85;
+            this.speedX = 0;
         }
     }
     if(pressedKey === 'right')
     {
         if(this.x > 403)
         {
-            this.moveY = 0;
-            this.moveX = 0;
+            this.speedY = 0;
+            this.speedX = 0;
         }
         else
         {
-        this.moveX =  101;
-        this.moveY = 0;
+        this.speedX =  101;
+        this.speedY = 0;
         }
     }
     if(pressedKey === 'left')
     {
         if(this.x < 101)
         {
-            this.moveY = 0;
-            this.moveX = 0;
+            this.speedY = 0;
+            this.speedX = 0;
         }
         else
         {
-        this.moveX = -101;
-        this.moveY = 0;
+        this.speedX = -101;
+        this.speedY = 0;
         }
     }
 }
-
-
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
@@ -180,13 +169,12 @@ function getRandomInt(min, max) {
 var allEnemies = [];
 for(var i=0; i<4; i++)
 {
-    var enemy = new Enemy(0,75*getRandomInt(1, 4),getRandomInt(50, 100),0);
+    var enemy = new Enemy(0,75*getRandomInt(1, 4),getRandomInt(50, 100),0,'images/enemy-bug.png');
     allEnemies[i] = enemy; 
 }
-//var Enemy2 = new Enemy(0,75*getRandomInt(1, 4),getRandomInt(5, 10),0);
-//var Enemy3 = new Enemy(0,75*getRandomInt(1, 4),getRandomInt(5, 10),0);
-var player = new Player(202,412,0,0);
-$("#score").append(player.score);
+var player = new Player(202,412,0,0,'images/char-boy.png',0,1);
+$("#score").html(player.score);
+console.log(player.x, player.y);
 
 
 
