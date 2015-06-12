@@ -76,7 +76,6 @@ Player.prototype.constructor = Player;
 Player.prototype.reset = function() {
     this.x = 202; 
     this.y = 412;
-    this.lastWan = 0;
     ctx.drawImage(Resources.get(this.sprite),this.x,this.y);
     $("#score").html(player.score);
 }
