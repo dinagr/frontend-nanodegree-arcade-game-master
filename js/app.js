@@ -1,6 +1,4 @@
 // Enemies our player must avoid
-
-//
 var Actor = function(x,y,speedX,speedY, sprite) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
@@ -21,11 +19,11 @@ Actor.prototype.render = function() {
 var Enemy = function(x,y,speedX,speedY, sprite) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
-
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     Actor.call(this,x,y,speedX,speedY, sprite);
 }
+
 Enemy.prototype = Object.create(Actor.prototype);
 Enemy.prototype.constructor = Enemy;
 
@@ -48,13 +46,13 @@ Enemy.prototype.reset = function() {
 Enemy.prototype.HandlesCollision = function(Player) {
     if ((Math.abs(this.x - Player.x)<75) && (Math.abs(this.y - Player.y)<75))
     {
-        if (Player.score <= 0)
+        if (Player.score <= 0) //If the score is less than 0 the game ends and a new one begins
         {
             alert("You lose!! A new game starts!");
         }
         else 
         {
-            Player.score--;
+            Player.score--; //If there is a collision the players score is subtracted by 1  
             $("#score").html(player.score);
         }
         return true;
@@ -62,15 +60,13 @@ Enemy.prototype.HandlesCollision = function(Player) {
     else return false;
 }
 
-var Player = function(x,y,speedX,speedY,sprite,score,lastWan) {
+var Player = function(x,y,speedX,speedY,sprite,score) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
-
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     Actor.call(this,x,y,speedX,speedY, sprite);
     this.score = score;
-    this.lastWan = lastWan;
 }
 
 Player.prototype = Object.create(Actor.prototype);
@@ -89,7 +85,6 @@ Player.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    //console.log("update player");
     this.x = this.x + this.speedX;
     this.y = this.y + this.speedY;
     this.speedX = 0;
@@ -101,11 +96,9 @@ Player.prototype.handleInput = function(pressedKey) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    //console.log("handleInput");
-    //console.log(pressedKey);
     if(pressedKey === 'up')
     {
-        if(this.y < 64)
+        if(this.y < 64)// Check is there room to move up
         {
             this.speedY = 0;
             this.speedX = 0;
@@ -118,7 +111,7 @@ Player.prototype.handleInput = function(pressedKey) {
     }
    if(pressedKey === 'down')
     {
-        if(this.y >= 410)
+        if(this.y >= 410)// Check is there room to move down
         {
             this.speedY = 0;
             this.speedX = 0;
@@ -131,7 +124,7 @@ Player.prototype.handleInput = function(pressedKey) {
     }
     if(pressedKey === 'right')
     {
-        if(this.x > 403)
+        if(this.x > 403)// Check is there room to move right
         {
             this.speedY = 0;
             this.speedX = 0;
@@ -144,7 +137,7 @@ Player.prototype.handleInput = function(pressedKey) {
     }
     if(pressedKey === 'left')
     {
-        if(this.x < 101)
+        if(this.x < 101)// Check is there room to move left
         {
             this.speedY = 0;
             this.speedX = 0;
@@ -156,27 +149,23 @@ Player.prototype.handleInput = function(pressedKey) {
         }
     }
 }
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+
+//This function returns a random int in the given limits - min and max
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 };
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies  
-// Place the player object in a variable called player
+ 
+//Creating instances of the objects Enemy andPlayer
 var allEnemies = [];
-for(var i=0; i<4; i++)
+for(var i=0; i<4; i++)//Creating 4 bugs(Enemys)
 {
     var enemy = new Enemy(0,75*getRandomInt(1, 4),getRandomInt(50, 100),0,'images/enemy-bug.png');
     allEnemies[i] = enemy; 
 }
-var player = new Player(202,412,0,0,'images/char-boy.png',0,1);
+//Creating the boy (Player)
+var player = new Player(202,412,0,0,'images/char-boy.png',0);
 $("#score").html(player.score);
-console.log(player.x, player.y);
-
-
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
@@ -187,6 +176,5 @@ document.addEventListener('keyup', function(e) {
         39: 'right',
         40: 'down'
     };
-
     player.handleInput(allowedKeys[e.keyCode]);
 });

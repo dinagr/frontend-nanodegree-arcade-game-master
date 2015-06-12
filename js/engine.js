@@ -57,8 +57,7 @@ var Engine = (function(global) {
          * function again as soon as the browser is able to draw another frame.
          */
         win.requestAnimationFrame(main);
-    };
-
+    }
     /* This function does some initial setup that should only occur once,
      * particularly setting the lastTime variable that is required for the
      * game loop.
@@ -102,17 +101,12 @@ var Engine = (function(global) {
                 enemy.reset();
         });
         player.update(dt);
-        if ((player.y < 72) && (player.lastWan === 0))
+        if (player.y < 72)//Check if the palyer reached the water
         {
             player.score++;
            $("#score").html(player.score);
-            player.lastWan = 1;
             player.reset();
         }
-        console.log("lastwan " + player.lastWan);
-        console.log("score " + player.score);
-        console.log("x " + player.x);
-        console.log("y " + player.y);
     }
 
     /* This function initially draws the "game level", it will then call
@@ -137,9 +131,6 @@ var Engine = (function(global) {
             numCols = 5,
             row, col;
 
-        //my code
-        var rowImages_new = ['images/enemy-bug.png','images/char-boy.png']
-        //end my code
         /* Loop through the number of rows and columns we've defined above
          * and, using the rowImages array, draw the correct image for that
          * portion of the "grid"
