@@ -2,7 +2,7 @@
 
 See the app here - http://dinagr.github.io/frontend-nanodegree-arcade-game-master/index.html </br>
 
-This is a game in which the boy needs to get to the water without touching the bugs. <br />
+This is a game in which the player needs to get to the water without touching the bugs. <br />
 
 # Instructions 
 
