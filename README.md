@@ -1,12 +1,17 @@
-frontend-nanodegree-arcade-game
-===============================
+# General
 
-click on index.html or visit my gh-page" - https://github.com/dinagr/frontend-nanodegree-arcade-game-master 
+See the app here - http://dinagr.github.io/frontend-nanodegree-arcade-game-master/index.html </br>
 
-This are the instruction for the game - 
+This is a game in which the boy needs to get to the water without touching the bugs. <br />
+
+# Instructions 
+
 1. Use the arrow keys to move the boy.
 2. The purpuse of the boy is to get to the water without colliding with one of the bugs
 3. Every time the boy gets to the water he gets 1 point
 4. Every time the boy collides with a bug he gets -1 point.
-5. If the score number of the boy is smaller than 0 he loses and a new game starts
+5. If the score number of the boy is smaller than 0 he loses and a new game starts  
+
+
+
 
